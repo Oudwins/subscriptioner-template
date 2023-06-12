@@ -46,7 +46,7 @@ export default ({
 }: InferGetServerSidePropsType<typeof getStaticProps>) => {
   //const [prices, setPrices] = useState([]);
   const { mutateAsync: createCheckoutSession } =
-    api.payment.createSubscriptionCheckout.useMutation();
+    api.payments.createSubscriptionCheckout.useMutation();
   const router = useRouter();
 
   async function processSubscription() {

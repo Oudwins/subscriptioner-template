@@ -5,7 +5,7 @@ import {
   createSubscriptionCheckout,
 } from "~/server/stripe/utils";
 
-export const customerRouter = createTRPCRouter({
+export const paymentsRouter = createTRPCRouter({
   createCustomer: privateProcedure.query(async ({ ctx }) => {
     const customerId = await findOrCreateCustomerId({ user: ctx.user });
     return {
