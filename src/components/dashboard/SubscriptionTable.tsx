@@ -72,7 +72,7 @@ export const columns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild className="flex justify-end">
+          <DropdownMenuTrigger asChild className="hidden justify-end md:flex">
             <div className="self-end">
               <Button variant="ghost" className=" p-0">
                 <span className="sr-only">Abrir menu</span>
