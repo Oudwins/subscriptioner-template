@@ -4,6 +4,7 @@ import "~/styles/globals.css";
 import { esES } from "@clerk/localizations";
 import { ClerkProvider } from "@clerk/nextjs";
 import { env } from "../env.mjs";
+import DashboardLayout from "~/components/dashboard/DashboardLayout";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -12,7 +13,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       publishableKey={env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
       {...pageProps}
     >
-      <Component {...pageProps} />
+      <DashboardLayout>
+        <Component {...pageProps} />
+      </DashboardLayout>
     </ClerkProvider>
   );
 };
