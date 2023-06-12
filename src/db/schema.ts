@@ -53,9 +53,7 @@ export const invoiceSchema = mysqlTable(
   "invoices",
   {
     id: char("id", { length: 27 }).primaryKey().notNull(),
-    subscriptionId: char("subscription_id", { length: 28 }).references(
-      () => subscriptionSchema.id
-    ),
+    subscriptionId: char("subscription_id", { length: 28 }), //.references(() => subscriptionSchema.id),
     billingReason: varchar("billing_reason", { length: 50 }),
     description: varchar("description", { length: 500 }),
     status: mysqlEnum("status", [
