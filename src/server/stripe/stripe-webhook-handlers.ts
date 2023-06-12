@@ -1,34 +1,69 @@
 import type Stripe from "stripe";
 import { db } from "~/db";
-import { subscriptionSchema } from "~/db/schema";
+import { subscriptionSchema, invoiceSchema } from "~/db/schema";
 import { InferModel, eq, and, asc, desc, or } from "drizzle-orm";
 
 type SubscriptionSchema = InferModel<typeof subscriptionSchema, "insert">;
+type InvoiceSchema = InferModel<typeof invoiceSchema, "insert">;
 
-export const handleInvoicePaid = async ({
-  event,
-  stripe,
-}: {
-  event: Stripe.Event;
-  stripe: Stripe;
-}) => {
+// invoice events -> https://stripe.com/docs/billing/subscriptions/webhooks#understand
+// - WHEN YOU CREATE IT
+// 1. invoice.created
+// 2. invoice.finalized
+// 3. invoice.finalization_failed (need to handle this some way if I want to create invoices)
+// - OTHER
+// 1. invoice.paid
+// 2. invoice.payment_action_required
+// 3. invoice.payment_failed
+// 4. invoice.upcoming
+// 5. invoice.updated
+
+const createNewInvoiceObj = (event: Stripe.Event) => {
   const invoice = event.data.object as Stripe.Invoice;
-  const subscriptionId = invoice.subscription;
-  const subscription = await stripe.subscriptions.retrieve(
-    subscriptionId as string
-  );
-  const userId = subscription.metadata.userId;
 
-  //   // update user with subscription data
-  //   await prisma.user.update({
-  //     where: {
-  //       id: userId,
-  //     },
-  //     data: {
-  //       stripeSubscriptionId: subscription.id,
-  //       stripeSubscriptionStatus: subscription.status,
-  //     },
-  //   });
+  const newInvoice: InvoiceSchema = {
+    id: invoice.id,
+    subscriptionId: invoice.subscription as string,
+    billingReason: invoice.billing_reason,
+    description: invoice.description,
+    status: invoice.status,
+    amountDue: invoice.amount_due,
+    amountPaid: invoice.amount_paid,
+    invoiceUrl: invoice.hosted_invoice_url,
+    createdAt: invoice.created,
+    currency: invoice.currency,
+  };
+
+  return newInvoice;
+};
+
+export const handleInvoices = async ({ event }: { event: Stripe.Event }) => {
+  const invoice = event.data.object as Stripe.Invoice;
+
+  // returns empty array if it doesn't find anything
+  const results = await db
+    .select()
+    .from(invoiceSchema)
+    .where(eq(invoiceSchema.id, invoice.id));
+
+  if (results.length === 0) {
+    // INSERT!
+    const invoiceObj = createNewInvoiceObj(event);
+    const res = await db.insert(invoiceSchema).values(invoiceObj);
+  } else {
+    // UPDATE
+    const res = await db
+      .update(invoiceSchema)
+      .set({
+        billingReason: invoice.billing_reason,
+        description: invoice.description,
+        status: invoice.status,
+        amountDue: invoice.amount_due,
+        amountPaid: invoice.amount_paid,
+        invoiceUrl: invoice.hosted_invoice_url,
+      })
+      .where(eq(invoiceSchema.id, invoice.id));
+  }
 };
 
 const createNewSubscriptionObj = (event: Stripe.Event) => {

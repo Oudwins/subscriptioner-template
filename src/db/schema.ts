@@ -42,15 +42,14 @@ export const subscriptionSchema = mysqlTable(
   }
 );
 
-export const InvoiceSchema = mysqlTable(
+export const invoiceSchema = mysqlTable(
   "invoices",
   {
     id: char("id", { length: 27 }).primaryKey().notNull(),
     subscriptionId: char("subscription_id", { length: 28 }).references(
       () => subscriptionSchema.id
     ),
-    userId: varchar("user_id", { length: 50 }).notNull(),
-    billingReason: varchar("billing_reason", { length: 50 }).notNull(),
+    billingReason: varchar("billing_reason", { length: 50 }),
     description: varchar("description", { length: 500 }),
     status: mysqlEnum("status", [
       "draft",
@@ -67,7 +66,6 @@ export const InvoiceSchema = mysqlTable(
   },
   (table) => {
     return {
-      userIndex: index("user_id_idx").on(table.userId),
       subscriptionIndex: index("subscription_id_idx").on(table.subscriptionId),
     };
   }

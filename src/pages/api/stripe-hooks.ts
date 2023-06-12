@@ -4,7 +4,7 @@ import { stripe } from "~/server/stripe/client";
 import { env } from "~/env.mjs";
 import { buffer } from "micro";
 import {
-  handleInvoicePaid,
+  handleInvoices,
   handleSubscriptionCanceled,
   handleSubscriptionUpdated,
   handleSubscriptionCreated,
@@ -42,13 +42,11 @@ const webhook = async (req: NextApiRequest, res: NextApiResponse) => {
   // invoice.payment_succeeded
 
   switch (event.type) {
-    case "invoice.paid":
-      console.log(JSON.stringify(event));
+    case "invoice.paid" || "invoice.upcoming" || "invoice.updated":
       // Used to provision services after the trial has ended.
       // The status of the invoice will show up as paid. Store the status in your database to reference when a user accesses your service to avoid hitting rate limits.
-      await handleInvoicePaid({
+      await handleInvoices({
         event,
-        stripe,
       });
       break;
     case "customer.subscription.created":
