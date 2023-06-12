@@ -129,10 +129,11 @@ export default ({ children }: { children: ReactNode }) => {
             <p>© {new Date().getFullYear()} Ridaly Inc. All rights reserved.</p>
             <ul className="mt-6 flex flex-wrap items-center gap-4 sm:mt-0 sm:text-sm">
               {footerNav.map((item, idx) => (
-                <li className="text-gray-800 duration-150 hover:text-gray-500">
-                  <Link key={idx} href={item.href}>
-                    {item.name}
-                  </Link>
+                <li
+                  className="text-gray-800 duration-150 hover:text-gray-500"
+                  key={idx}
+                >
+                  <Link href={item.href}>{item.name}</Link>
                 </li>
               ))}
             </ul>
