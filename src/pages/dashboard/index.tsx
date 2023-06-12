@@ -6,7 +6,7 @@ import {
   Subscription,
   columns,
 } from "~/components/dashboard/SubscriptionTable";
-import { DataTable } from "~/components/ui/DataTable";
+import { DataTable } from "~/components/ui/DataTable/";
 import LoadingSpinner from "~/components/ui/LoadingSpinner";
 import { api } from "~/utils/api";
 
