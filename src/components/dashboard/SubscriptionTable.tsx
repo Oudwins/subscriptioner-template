@@ -71,7 +71,7 @@ export const columns: ColumnDef<Subscription>[] = [
     id: "actions",
     cell: ({ row }) => {
       return (
-        <DropdownMenu className="">
+        <DropdownMenu>
           <DropdownMenuTrigger asChild className="flex justify-end">
             <div className="self-end">
               <Button variant="ghost" className=" p-0">
@@ -80,7 +80,7 @@ export const columns: ColumnDef<Subscription>[] = [
               </Button>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-white">
+          <DropdownMenuContent className="w-5">
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
