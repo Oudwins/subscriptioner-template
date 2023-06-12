@@ -1,10 +1,12 @@
 import type Stripe from "stripe";
 import { db } from "~/db";
-import { subscriptionSchema, invoiceSchema } from "~/db/schema";
+import {
+  subscriptionSchema,
+  SubscriptionSchema,
+  invoiceSchema,
+  InvoiceSchema,
+} from "~/db/schema";
 import { InferModel, eq, and, asc, desc, or } from "drizzle-orm";
-
-type SubscriptionSchema = InferModel<typeof subscriptionSchema, "insert">;
-type InvoiceSchema = InferModel<typeof invoiceSchema, "insert">;
 
 // invoice events -> https://stripe.com/docs/billing/subscriptions/webhooks#understand
 // - WHEN YOU CREATE IT

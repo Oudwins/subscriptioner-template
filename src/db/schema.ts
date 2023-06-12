@@ -8,6 +8,8 @@ import {
   json,
 } from "drizzle-orm/mysql-core";
 
+import { InferModel } from "drizzle-orm";
+
 interface subscriptionData {
   domain?: string;
   description?: string;
@@ -42,6 +44,11 @@ export const subscriptionSchema = mysqlTable(
   }
 );
 
+export type SubscriptionSchema = InferModel<
+  typeof subscriptionSchema,
+  "insert"
+>;
+
 export const invoiceSchema = mysqlTable(
   "invoices",
   {
@@ -70,6 +77,8 @@ export const invoiceSchema = mysqlTable(
     };
   }
 );
+
+export type InvoiceSchema = InferModel<typeof invoiceSchema, "insert">;
 
 // stripeInvoiceId
 // billing_reason
