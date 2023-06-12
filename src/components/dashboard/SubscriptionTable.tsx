@@ -14,6 +14,8 @@ import { Button } from "../ui/button";
 import { MoreHorizontal, Files, XCircle } from "lucide-react";
 import Link from "next/link";
 
+import { DataTableSortableHeader } from "../ui/DataTable/DataTableSortableHeader";
+
 export type Subscription = SubscriptionSchema;
 
 // export type Subscription = {
@@ -30,7 +32,13 @@ export const columns: ColumnDef<Subscription>[] = [
   // },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => {
+      return <DataTableSortableHeader column={column} title="Status" />;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "Producto",
   },
   {
     accessorKey: "currentPeriodStart",
@@ -83,10 +91,7 @@ export const columns: ColumnDef<Subscription>[] = [
           <DropdownMenuContent className="">
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="cursor-pointer rounded transition-all hover:bg-indigo-50"
-              asChild
-            >
+            <DropdownMenuItem className="" asChild>
               <Link
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/invoices`}
               >
@@ -94,10 +99,7 @@ export const columns: ColumnDef<Subscription>[] = [
                 <span>Ver Facturas</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="cursor-pointer rounded transition-all hover:bg-red-100"
-              asChild
-            >
+            <DropdownMenuItem className="hover:bg-red-100" asChild>
               <Link
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/cancel`}
               >
