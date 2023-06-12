@@ -6,7 +6,7 @@ import {
   invoiceSchema,
   InvoiceSchema,
 } from "~/db/schema";
-import { InferModel, eq, and, asc, desc, or } from "drizzle-orm";
+import { eq, and, asc, desc, or } from "drizzle-orm";
 
 // invoice events -> https://stripe.com/docs/billing/subscriptions/webhooks#understand
 // - WHEN YOU CREATE IT
