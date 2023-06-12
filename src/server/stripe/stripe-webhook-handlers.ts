@@ -81,6 +81,7 @@ const createNewSubscriptionObj = (event: Stripe.Event) => {
   const subscriptionObj: SubscriptionSchema = {
     id: id,
     userId: userId as string,
+    name: subscription.items.data[0]?.price.nickname || "Subscripción",
     currentPeriodStart,
     currentPeriodEnd,
     currency: subscription.currency,

@@ -23,6 +23,7 @@ export const subscriptionSchema = mysqlTable(
     userId: varchar("user_id", { length: 50 }).notNull(),
     currentPeriodStart: int("current_period_start").notNull(),
     currentPeriodEnd: int("current_period_end").notNull(),
+    name: varchar("name", { length: 100 }).notNull(),
     price: int("price"),
     status: mysqlEnum("status", [
       "active",
