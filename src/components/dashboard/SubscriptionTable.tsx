@@ -80,7 +80,7 @@ export const columns: ColumnDef<Subscription>[] = [
               </Button>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-5">
+          <DropdownMenuContent className="">
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -91,7 +91,7 @@ export const columns: ColumnDef<Subscription>[] = [
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/invoices`}
               >
                 <Files className="mr-2 h-4 w-4" />
-                <span>Ver facturas</span>
+                <span>Ver Facturas</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -102,7 +102,7 @@ export const columns: ColumnDef<Subscription>[] = [
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/cancel`}
               >
                 <XCircle className="mr-2 h-4 w-4" />
-                <span>Cancelar</span>
+                <span>Cancelar Subscripción</span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
