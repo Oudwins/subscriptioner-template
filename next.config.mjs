@@ -14,9 +14,22 @@ const config = {
    *
    * @see https://github.com/vercel/next.js/issues/41980
    */
+  webpack(config) {
+    config.experiments = { ...config.experiments, topLevelAwait: true };
+    return config;
+  },
   i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
+    locales: ["es"],
+    defaultLocale: "es",
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/dashboard",
+        permanent: true,
+      },
+    ];
   },
 };
 export default config;
