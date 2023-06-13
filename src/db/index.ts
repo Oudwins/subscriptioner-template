@@ -3,14 +3,15 @@
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 import { connect } from "@planetscale/database";
 import { env } from "../env.mjs";
-import { InferModel } from "drizzle-orm";
-import { subscriptionSchema } from "./schema.js";
+import * as schema from "./schema";
 
 const connection = connect({
   url: env.DB_URL,
 });
 
 export const db = drizzle(connection);
+
+export const dbHighLevel = drizzle(connection, { schema });
 // mySQL
 // const connection = await mysql.createConnection({
 //   uri: env.DB_URL,

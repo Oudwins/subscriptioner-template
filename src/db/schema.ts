@@ -8,7 +8,7 @@ import {
   json,
 } from "drizzle-orm/mysql-core";
 
-import { InferModel } from "drizzle-orm";
+import { InferModel, relations } from "drizzle-orm";
 
 // interface subscriptionData {
 //   domain?: string;
@@ -46,6 +46,11 @@ export const subscriptionSchema = mysqlTable(
   }
 );
 
+export const subscriptionsRelations = relations(
+  subscriptionSchema,
+  ({ many }) => ({ invoices: many(invoiceSchema) })
+);
+
 export type SubscriptionSchema = InferModel<
   typeof subscriptionSchema,
   "insert"
@@ -56,7 +61,7 @@ export const invoiceSchema = mysqlTable(
   {
     id: char("id", { length: 27 }).primaryKey().notNull(),
     userId: varchar("user_id", { length: 50 }).notNull(),
-    subscriptionId: char("subscription_id", { length: 28 }), //.references(() => subscriptionSchema.id),
+    subscriptionId: char("subscription_id", { length: 28 }).notNull(), //.references(() => subscriptionSchema.id),
     billingReason: varchar("billing_reason", { length: 50 }),
     description: varchar("description", { length: 500 }),
     status: mysqlEnum("status", [
@@ -79,6 +84,13 @@ export const invoiceSchema = mysqlTable(
     };
   }
 );
+
+export const invoicesRelations = relations(invoiceSchema, ({ one }) => ({
+  subscription: one(subscriptionSchema, {
+    fields: [invoiceSchema.subscriptionId],
+    references: [subscriptionSchema.id],
+  }),
+}));
 
 export type InvoiceSchema = InferModel<typeof invoiceSchema, "insert">;
 
