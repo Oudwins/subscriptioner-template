@@ -75,7 +75,6 @@ export const columns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const amount = parseInt(row.getValue("price"));
       const currency = row.original.currency || "EUR";
-      console.log(row.original.currency);
       const locale = navigator.language;
       return (
         <div className="font-medium">

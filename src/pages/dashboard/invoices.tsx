@@ -14,7 +14,6 @@ const Dashboard: NextPage = () => {
   const invoiceFilterObj = router.query.subscriptionId
     ? { filter: { subscriptionId: router.query.subscriptionId as string } }
     : {};
-  console.log(router.query);
   const { isLoaded, isSignedIn, user } = useUser();
   const invoices = api.invoices.getMyInvoices.useQuery(invoiceFilterObj, {
     enabled: isLoaded,
