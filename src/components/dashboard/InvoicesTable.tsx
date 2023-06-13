@@ -1,6 +1,6 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import { InvoiceSchema } from "~/db/schema";
+import { InvoiceSchema, SubscriptionSchema } from "~/db/schema";
 import { formatUnixTimestamp, formatCurrency } from "~/utils/format";
 import {
   DropdownMenu,
@@ -16,17 +16,22 @@ import { Badge } from "@/components/ui/badge";
 
 import { DataTableSortableHeader } from "../ui/DataTable/DataTableSortableHeader";
 
-export type Invoice = InvoiceSchema;
+export interface Invoice extends InvoiceSchema {
+  subscription: SubscriptionSchema;
+}
 
 export const columns: ColumnDef<Invoice>[] = [
-  //   {
-  //     id: "product",
-  //     header: ({ column }) => {
-  //       return (
-  //         <DataTableSortableHeader column={column} title="Producto/servicio" />
-  //       );
-  //     },
-  //   },
+  {
+    id: "product",
+    header: ({ column }) => {
+      return (
+        <DataTableSortableHeader column={column} title="Producto/servicio" />
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.subscription.name;
+    },
+  },
   {
     accessorKey: "status",
     header: ({ column }) => {

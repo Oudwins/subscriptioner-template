@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
-import { db } from "~/db";
+import { dbHighLevel, db } from "~/db";
 import { invoiceSchema } from "~/db/schema";
 import { eq, and, asc, desc, or, ne } from "drizzle-orm";
 
@@ -31,7 +31,12 @@ export const invoiceRouter = createTRPCRouter({
               ne(invoiceSchema.status, "draft")
             );
 
-      const invoices = await db.select().from(invoiceSchema).where(where);
+      const invoices = dbHighLevel.query.invoiceSchema.findMany({
+        where,
+        with: {
+          subscription: true,
+        },
+      });
 
       return invoices;
     }),
