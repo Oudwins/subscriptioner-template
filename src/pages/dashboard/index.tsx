@@ -16,7 +16,7 @@ import { Send } from "lucide-react";
 const Dashboard: NextPage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
   const subscriptions = api.subscriptions.getMySubscriptions.useQuery(
-    undefined,
+    { filter: { status: "active" } },
     {
       enabled: isLoaded,
     }
