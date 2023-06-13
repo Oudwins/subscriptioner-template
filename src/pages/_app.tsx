@@ -16,6 +16,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <DashboardLayout>
         <Component {...pageProps} />
       </DashboardLayout>
+      <script async src="//js-eu1.hs-scripts.com/27233929.js"></script>
     </ClerkProvider>
   );
 };
