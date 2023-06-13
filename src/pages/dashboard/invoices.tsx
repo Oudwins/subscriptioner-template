@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
 import { Invoice, columns } from "~/components/dashboard/InvoicesTable";
 import { DataTable } from "~/components/ui/DataTable/";
@@ -11,13 +10,15 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Send } from "lucide-react";
 
 const Dashboard: NextPage = () => {
+  const router = useRouter();
+  const invoiceFilterObj = router.query.subscriptionId
+    ? { filter: { subscriptionId: router.query.subscriptionId as string } }
+    : {};
+  console.log(router.query);
   const { isLoaded, isSignedIn, user } = useUser();
-  const invoices = api.invoices.getMyInvoices.useQuery(
-    {},
-    {
-      enabled: isLoaded,
-    }
-  );
+  const invoices = api.invoices.getMyInvoices.useQuery(invoiceFilterObj, {
+    enabled: isLoaded,
+  });
 
   return (
     <>
