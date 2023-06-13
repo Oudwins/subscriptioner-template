@@ -113,7 +113,10 @@ export const columns: ColumnDef<Subscription>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
               <Link
-                href={`/dashboard/subscriptions/${row.original.stripePriceId}/invoices`}
+                href={{
+                  pathname: "/dashboard/invoices",
+                  query: { subscriptionId: row.original.id },
+                }}
               >
                 <FileCheck className="mr-2 h-4 w-4" />
                 <span>Ver Facturas</span>
