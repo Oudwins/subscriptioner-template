@@ -13,7 +13,7 @@ export default ({ children }: { children: ReactNode }) => {
     { title: "Mis Servicios", path: "/dashboard/services" },
     { title: "Facturación", path: "/dashboard/invoices" },
     { title: "Contratar Servicio", path: "/pricing/" },
-    { title: "Atención al Cliente", path: "/help" },
+    { title: "Soporte", path: "/dashboard/help" },
   ];
 
   const footerNav = [
