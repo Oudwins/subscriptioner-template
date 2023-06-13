@@ -36,6 +36,7 @@ export const invoiceRouter = createTRPCRouter({
         with: {
           subscription: true,
         },
+        orderBy: [invoiceSchema.status, invoiceSchema.createdAt],
       });
 
       return invoices;

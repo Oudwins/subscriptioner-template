@@ -33,7 +33,11 @@ export const subscriptionsRouter = createTRPCRouter({
       const subscriptions = await db
         .select()
         .from(subscriptionSchema)
-        .where(where);
+        .where(where)
+        .orderBy(
+          subscriptionSchema.status,
+          subscriptionSchema.currentPeriodEnd
+        );
 
       return subscriptions;
     }),
