@@ -13,6 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { MoreHorizontal, Files, XCircle } from "lucide-react";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 import { DataTableSortableHeader } from "../ui/DataTable/DataTableSortableHeader";
 
@@ -31,30 +32,38 @@ export const columns: ColumnDef<Subscription>[] = [
   //   header: "descripción",
   // },
   {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return <DataTableSortableHeader column={column} title="Estatus" />;
-    },
-  },
-  {
     accessorKey: "name",
-    header: "Producto",
+    header: ({ column }) => {
+      return (
+        <DataTableSortableHeader column={column} title="Producto/servicio" />
+      );
+    },
   },
   {
     accessorKey: "description",
     header: "Descripción",
   },
   {
-    accessorKey: "currentPeriodStart",
-    header: "Comienzo",
+    accessorKey: "status",
+    header: ({ column }) => {
+      return <DataTableSortableHeader column={column} title="Estatus" />;
+    },
     cell: ({ row }) => {
-      const timestamp = parseInt(row.getValue("currentPeriodStart"));
-      return formatUnixTimestamp(timestamp);
+      return (
+        <Badge
+          variant={
+            row.getValue("status") === "active" ? "success" : "destructive"
+          }
+        >
+          {" "}
+          {row.getValue("status")}{" "}
+        </Badge>
+      );
     },
   },
   {
     accessorKey: "currentPeriodEnd",
-    header: "Expiración",
+    header: "Próximo Pago",
     cell: ({ row }) => {
       const timestamp = parseInt(row.getValue("currentPeriodEnd"));
       return formatUnixTimestamp(timestamp);
@@ -96,16 +105,13 @@ export const columns: ColumnDef<Subscription>[] = [
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="cursor-pointer hover:bg-indigo-50"
+              className="cursor-pointer"
               onClick={() => navigator.clipboard.writeText(row.original.id)}
             >
               <Files className="mr-2 h-4 w-4" />
               <span>Copiar ID</span>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="cursor-pointer hover:bg-indigo-50"
-              asChild
-            >
+            <DropdownMenuItem className="cursor-pointer" asChild>
               <Link
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/invoices`}
               >
@@ -114,11 +120,12 @@ export const columns: ColumnDef<Subscription>[] = [
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="cursor-pointer hover:bg-red-100"
+              className="cursor-pointer focus:bg-red-100"
               asChild
             >
               <Link
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/cancel`}
+                className=""
               >
                 <XCircle className="mr-2 h-4 w-4" />
                 <span>Cancelar Subscripción</span>
