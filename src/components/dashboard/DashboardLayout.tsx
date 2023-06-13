@@ -12,7 +12,7 @@ export default ({ children }: { children: ReactNode }) => {
     { title: "Panel de Control", path: "/dashboard" },
     { title: "Mis Servicios", path: "/dashboard/services" },
     { title: "Facturación", path: "/dashboard/invoices" },
-    { title: "Contratar Servicio", path: "/pricing/hosting" },
+    { title: "Contratar Servicio", path: "/pricing/" },
     { title: "Atención al Cliente", path: "/help" },
   ];
 
