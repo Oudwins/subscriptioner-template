@@ -11,7 +11,7 @@ export default ({ children }: { children: ReactNode }) => {
   const navigation = [
     { title: "Panel de Control", path: "/dashboard" },
     { title: "Mis Servicios", path: "/dashboard/services" },
-    { title: "Facturación", path: "/invoices" },
+    { title: "Facturación", path: "/dashboard/invoices" },
     { title: "Contratar Servicio", path: "/pricing/hosting" },
     { title: "Atención al Cliente", path: "/help" },
   ];
