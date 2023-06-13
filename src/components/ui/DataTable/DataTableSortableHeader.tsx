@@ -42,7 +42,7 @@ export function DataTableSortableHeader<TData, TValue>({
           <Button
             variant="ghost"
             size="sm"
-            className="data-[state=open]:bg-accent -ml-3 h-8"
+            className="-ml-3 h-8 data-[state=open]:bg-accent"
           >
             <span>{title}</span>
             {column.getIsSorted() === "desc" ? (
@@ -58,21 +58,19 @@ export function DataTableSortableHeader<TData, TValue>({
           <DropdownMenuItem
             className=" cursor-pointer rounded transition-all hover:bg-indigo-50"
             onClick={() => {
-              console.log("triggered 1");
               column.toggleSorting(false);
             }}
           >
-            <SortAsc className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
+            <SortAsc className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              console.log("triggered 2");
               column.toggleSorting(true);
             }}
             className="cursor-pointer rounded transition-all hover:bg-indigo-50"
           >
-            <SortDesc className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
+            <SortDesc className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
