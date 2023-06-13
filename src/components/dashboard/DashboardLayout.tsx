@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import Logo from "../utils/Logo";
+import Head from "next/head";
 
 export default ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState(false);
@@ -32,6 +33,15 @@ export default ({ children }: { children: ReactNode }) => {
 
   return (
     <>
+      {/* HEAD */}
+      <Head>
+        <title>Ridaly App Panel de Control</title>
+        <meta
+          name="description"
+          content="Inicia sesión para gestionar tus subscripciones"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {/* NAVBAR */}
       <nav className="w-full border-b bg-white md:static md:border-none md:text-sm">
         <div className="container mx-auto items-center px-4 md:flex md:px-8">
