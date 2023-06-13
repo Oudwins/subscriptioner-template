@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import Logo from "../utils/Logo";
 
 export default ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState(false);
@@ -36,14 +37,15 @@ export default ({ children }: { children: ReactNode }) => {
         <div className="container mx-auto items-center px-4 md:flex md:px-8">
           <div className="flex items-center justify-between py-3 md:block md:py-5">
             <Link href="/dashboard">
-              <img
+              <Logo w={140} />
+              {/* <img
                 src="https://www.floatui.com/logo.svg"
                 width={120}
                 height={50}
                 alt="Float UI logo"
-              />
+              /> */}
             </Link>
-            <div className="md:hidden">
+            <div className="flex space-x-5 md:hidden">
               <button
                 className="text-gray-500 hover:text-gray-800"
                 onClick={() => setState(!state)}
@@ -78,6 +80,7 @@ export default ({ children }: { children: ReactNode }) => {
                   </svg>
                 )}
               </button>
+              <UserButton afterSignOutUrl="/" />
             </div>
           </div>
           <div
@@ -85,7 +88,7 @@ export default ({ children }: { children: ReactNode }) => {
               state ? "block" : "hidden"
             }`}
           >
-            <ul className="items-center justify-end space-y-6 md:flex md:space-x-6 md:space-y-0">
+            <ul className="items-center justify-end space-y-6 text-center md:flex md:space-x-6 md:space-y-0 md:text-left">
               {navigation.map((item, idx) => {
                 return (
                   <li key={idx} className="text-gray-700 hover:text-indigo-600">
@@ -96,7 +99,7 @@ export default ({ children }: { children: ReactNode }) => {
                 );
               })}
               <span className="hidden h-6 w-px bg-gray-300 md:block"></span>
-              <div className="items-center gap-x-6 space-y-3 md:flex md:space-y-0">
+              <div className="hidden items-center gap-x-6 space-y-3 md:flex md:space-y-0 ">
                 <UserButton afterSignOutUrl="/" />
                 {/* <li>
                   <Link
