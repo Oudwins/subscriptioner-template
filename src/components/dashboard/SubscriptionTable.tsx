@@ -33,12 +33,16 @@ export const columns: ColumnDef<Subscription>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
-      return <DataTableSortableHeader column={column} title="Status" />;
+      return <DataTableSortableHeader column={column} title="Estatus" />;
     },
   },
   {
     accessorKey: "name",
     header: "Producto",
+  },
+  {
+    accessorKey: "description",
+    header: "Descripción",
   },
   {
     accessorKey: "currentPeriodStart",
