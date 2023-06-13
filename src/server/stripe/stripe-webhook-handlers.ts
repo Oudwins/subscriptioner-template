@@ -20,11 +20,12 @@ import { eq, and, asc, desc, or } from "drizzle-orm";
 // 4. invoice.upcoming
 // 5. invoice.updated
 
-const createNewInvoiceObj = (event: Stripe.Event) => {
+const createNewInvoiceObj = (event: Stripe.Event, userId: string) => {
   const invoice = event.data.object as Stripe.Invoice;
 
   const newInvoice: InvoiceSchema = {
     id: invoice.id,
+    userId,
     subscriptionId: invoice.subscription as string,
     billingReason: invoice.billing_reason,
     description: invoice.description,
@@ -42,6 +43,22 @@ const createNewInvoiceObj = (event: Stripe.Event) => {
 export const handleInvoices = async ({ event }: { event: Stripe.Event }) => {
   const invoice = event.data.object as Stripe.Invoice;
 
+  // find subscription & throw error if it doesn't exist + get the user
+  if (!invoice.subscription) {
+    // error
+    console.error("INVOICE WITHOUT SUBSCRIPTION");
+    return;
+  }
+  const subscription = await db
+    .select()
+    .from(subscriptionSchema)
+    .where(eq(subscriptionSchema.id, invoice.subscription as string));
+  if (subscription.length === 0) {
+    // error
+    console.error("INVOICE WITHOUT SUBSCRIPTION");
+    return;
+  }
+
   // returns empty array if it doesn't find anything
   const results = await db
     .select()
@@ -50,7 +67,10 @@ export const handleInvoices = async ({ event }: { event: Stripe.Event }) => {
 
   if (results.length === 0) {
     // INSERT!
-    const invoiceObj = createNewInvoiceObj(event);
+    const invoiceObj = createNewInvoiceObj(
+      event,
+      subscription[0]?.userId as string
+    );
     const res = await db.insert(invoiceSchema).values(invoiceObj);
   } else {
     // UPDATE
