@@ -10,7 +10,7 @@ export default ({ children }: { children: ReactNode }) => {
   // Replace javascript:void(0) paths with your paths
   const navigation = [
     { title: "Panel de Control", path: "/dashboard" },
-    { title: "Mis Servicios", path: "/dashboard" },
+    { title: "Mis Servicios", path: "/dashboard/services" },
     { title: "Facturación", path: "/invoices" },
     { title: "Contratar Servicio", path: "/pricing/hosting" },
     { title: "Atención al Cliente", path: "/help" },
