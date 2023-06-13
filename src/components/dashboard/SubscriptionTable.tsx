@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { MoreHorizontal, Files, XCircle } from "lucide-react";
+import { MoreHorizontal, Files, XCircle, FileCheck } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Subscription>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
-      return <DataTableSortableHeader column={column} title="Estatus" />;
+      return <DataTableSortableHeader column={column} title="Estado" />;
     },
     cell: ({ row }) => {
       return (
@@ -115,7 +115,7 @@ export const columns: ColumnDef<Subscription>[] = [
               <Link
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/invoices`}
               >
-                <Files className="mr-2 h-4 w-4" />
+                <FileCheck className="mr-2 h-4 w-4" />
                 <span>Ver Facturas</span>
               </Link>
             </DropdownMenuItem>
