@@ -10,10 +10,10 @@ import {
 
 import { InferModel } from "drizzle-orm";
 
-interface subscriptionData {
-  domain?: string;
-  description?: string;
-}
+// interface subscriptionData {
+//   domain?: string;
+//   description?: string;
+// }
 
 export const subscriptionSchema = mysqlTable(
   "subscriptions",
@@ -24,6 +24,7 @@ export const subscriptionSchema = mysqlTable(
     currentPeriodStart: int("current_period_start").notNull(),
     currentPeriodEnd: int("current_period_end").notNull(),
     name: varchar("name", { length: 100 }).notNull(),
+    description: varchar("description", { length: 520 }),
     price: int("price"),
     status: mysqlEnum("status", [
       "active",
@@ -36,7 +37,7 @@ export const subscriptionSchema = mysqlTable(
       "unpaid",
     ]).notNull(),
     currency: varchar("currency", { length: 5 }),
-    data: json("data").$type<subscriptionData>(),
+    // data: json("data").$type<subscriptionData>(),
   },
   (table) => {
     return {
