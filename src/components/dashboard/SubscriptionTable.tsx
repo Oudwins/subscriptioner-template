@@ -91,7 +91,17 @@ export const columns: ColumnDef<Subscription>[] = [
           <DropdownMenuContent className="">
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="" asChild>
+            <DropdownMenuItem
+              className="cursor-pointer hover:bg-indigo-50"
+              onClick={() => navigator.clipboard.writeText(row.original.id)}
+            >
+              <Files className="mr-2 h-4 w-4" />
+              <span>Copiar ID</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer hover:bg-indigo-50"
+              asChild
+            >
               <Link
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/invoices`}
               >
@@ -99,7 +109,10 @@ export const columns: ColumnDef<Subscription>[] = [
                 <span>Ver Facturas</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="hover:bg-red-100" asChild>
+            <DropdownMenuItem
+              className="cursor-pointer hover:bg-red-100"
+              asChild
+            >
               <Link
                 href={`/dashboard/subscriptions/${row.original.stripePriceId}/cancel`}
               >
