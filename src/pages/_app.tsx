@@ -5,6 +5,7 @@ import { esES } from "@clerk/localizations";
 import { ClerkProvider } from "@clerk/nextjs";
 import { env } from "../env.mjs";
 import DashboardLayout from "~/components/dashboard/DashboardLayout";
+import { Toaster } from "@/components/ui/toaster";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -17,6 +18,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <Component {...pageProps} />
       </DashboardLayout>
       <script async src="//js-eu1.hs-scripts.com/27233929.js"></script>
+      <Toaster />
     </ClerkProvider>
   );
 };
