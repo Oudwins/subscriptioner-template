@@ -12,11 +12,11 @@ export const formatUnixTimestamp = (unixTimestamp: number) => {
 
 export const formatCurrency = ({
   amount,
-  locale,
+  locale = "es-ES",
   currency,
 }: {
   amount: number;
-  locale: string;
+  locale?: string;
   currency: string;
 }) => {
   return new Intl.NumberFormat(locale, {
