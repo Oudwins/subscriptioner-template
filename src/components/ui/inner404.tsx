@@ -7,7 +7,10 @@ export default () => {
 
   return (
     <section className="bg-white dark:bg-gray-900 ">
-      <div className="container mx-auto flex min-h-screen items-center px-6 py-12">
+      <div
+        className="container mx-auto flex items-center px-6 py-12"
+        style={{ minHeight: "70vh" }}
+      >
         <div className="mx-auto flex max-w-sm flex-col items-center text-center">
           <p className="rounded-full bg-blue-50 p-3 text-sm font-medium text-blue-500 dark:bg-gray-800">
             <svg
