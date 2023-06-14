@@ -31,26 +31,6 @@ export const createCustomerId = async ({
   });
 
   return user.publicMetadata.stripeCustomerId as string;
-  //   const customerCreate = await stripeApiClient.customers.create(
-  //     {
-  //       name: user.firstName + " " + user.lastName,
-  //       email: user.emailAddresses.find(
-  //         (x) => x.id === user.primaryEmailAddressId
-  //       ).emailAddress,
-  //       metadata: {
-  //         userId: user.id,
-  //       },
-  //     },
-  //     {
-  //       idempotencyKey: user.id,
-  //     }
-  //   );
-  // user = await clerkClient.users.updateUser(user.id, {
-  //   publicMetadata: {
-  //     stripeCustomerId: customerCreate.id,
-  //   },
-  // });
-  //return user.publicMetadata.stripeCustomerId as string;
 };
 
 export const findOrCreateCustomerId = async ({ user }: { user: User }) => {
@@ -99,4 +79,20 @@ export const createSubscriptionCheckout = async ({
   });
 
   return { sessionId: session.id, sessionUrl: session.url };
+};
+
+export const cancelStripeSubscriptionAtPeriodEnd = async ({
+  subscriptionId,
+}: {
+  subscriptionId: string;
+}) => {
+  try {
+    const subscription = await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: true,
+    });
+    return { status: "success", data: subscription };
+  } catch (e) {
+    console.log(e);
+    return { status: "error", data: e };
+  }
 };
