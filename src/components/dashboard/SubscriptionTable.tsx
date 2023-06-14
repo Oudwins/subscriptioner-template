@@ -63,8 +63,19 @@ export const columns: ColumnDef<Subscription>[] = [
   },
   {
     accessorKey: "currentPeriodEnd",
+    header: "Fecha de vencimiento",
+    cell: ({ row }) => {
+      const timestamp = parseInt(row.getValue("currentPeriodEnd"));
+      return formatUnixTimestamp(timestamp);
+    },
+  },
+  {
+    accessorKey: "currentPeriodEnd",
     header: "Próximo Pago",
     cell: ({ row }) => {
+      if (row.original.cancelAtPeriodEnd)
+        return <Badge variant="destructive"> No </Badge>;
+
       const timestamp = parseInt(row.getValue("currentPeriodEnd"));
       return formatUnixTimestamp(timestamp);
     },
@@ -121,27 +132,28 @@ export const columns: ColumnDef<Subscription>[] = [
                 <span>Ver Facturas</span>
               </Link>
             </DropdownMenuItem>
-            {row.original.status === "active" && (
-              <DropdownMenuItem
-                className="cursor-pointer focus:bg-red-100"
-                asChild
-              >
-                <Link
-                  href={{
-                    pathname: "/dashboard/services/cancel",
-                    query: {
-                      subscription_id: row.original.id,
-                      plan: row.original.name,
-                      current_period_end: row.original.currentPeriodEnd,
-                    },
-                  }}
-                  className=""
+            {row.original.status === "active" &&
+              !row.original.cancelAtPeriodEnd && (
+                <DropdownMenuItem
+                  className="cursor-pointer focus:bg-red-100"
+                  asChild
                 >
-                  <XCircle className="mr-2 h-4 w-4" />
-                  <span>Cancelar Subscripción</span>
-                </Link>
-              </DropdownMenuItem>
-            )}
+                  <Link
+                    href={{
+                      pathname: "/dashboard/services/cancel",
+                      query: {
+                        subscription_id: row.original.id,
+                        plan: row.original.name,
+                        current_period_end: row.original.currentPeriodEnd,
+                      },
+                    }}
+                    className=""
+                  >
+                    <XCircle className="mr-2 h-4 w-4" />
+                    <span>Cancelar Subscripción</span>
+                  </Link>
+                </DropdownMenuItem>
+              )}
           </DropdownMenuContent>
         </DropdownMenu>
       );
