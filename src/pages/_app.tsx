@@ -6,17 +6,27 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { env } from "../env.mjs";
 import DashboardLayout from "~/components/dashboard/DashboardLayout";
 import { Toaster } from "@/components/ui/toaster";
+// ts
+import type { Page } from "@/types/page";
+import type { AppProps } from "next/app";
+import Dashboard from "./dashboard/help.jsx";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+type Props = AppProps & {
+  Component: Page;
+};
+
+const MyApp: AppType = ({ Component, pageProps }: Props) => {
+  const getLayout =
+    Component.getLayout ||
+    ((page) => <DashboardLayout> {page} </DashboardLayout>);
+
   return (
     <ClerkProvider
       localization={esES}
       publishableKey={env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
       {...pageProps}
     >
-      <DashboardLayout>
-        <Component {...pageProps} />
-      </DashboardLayout>
+      {getLayout(<Component {...pageProps} />)}
       <script async src="//js-eu1.hs-scripts.com/27233929.js"></script>
       <Toaster />
     </ClerkProvider>
