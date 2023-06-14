@@ -5,6 +5,7 @@ import {
   varchar,
   char,
   index,
+  boolean,
   json,
 } from "drizzle-orm/mysql-core";
 
@@ -37,6 +38,8 @@ export const subscriptionSchema = mysqlTable(
       "unpaid",
     ]).notNull(),
     currency: varchar("currency", { length: 5 }),
+    cancelledAt: int("cancelled_at"),
+    cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false),
     // data: json("data").$type<subscriptionData>(),
   },
   (table) => {
