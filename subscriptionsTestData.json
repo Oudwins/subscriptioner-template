@@ -1,0 +1,20 @@
+{
+    id: char("id", { length: 28 }).primaryKey().notNull(),
+    stripePriceId: varchar("stripe_product_id", { length: 50 }),
+    userId: varchar("user_id", { length: 50 }).notNull(),
+    currentPeriodStart: int("current_period_start").notNull(),
+    currentPeriodEnd: int("current_period_end").notNull(),
+    price: int("price"),
+    status: mysqlEnum("status", [
+      "active",
+      "canceled",
+      "incomplete",
+      "incomplete_expired",
+      "past_due",
+      "paused",
+      "trialing",
+      "unpaid",
+    ]).notNull(),
+    currency: varchar("currency", { length: 5 }),
+    data: json("data").$type<subscriptionData>(),
+}
