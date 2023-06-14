@@ -113,6 +113,19 @@ const createNewSubscriptionObj = (event: Stripe.Event) => {
   return subscriptionObj;
 };
 
+const createNewUpdateSubscriptionObj = (event: Stripe.Event) => {
+  const subscription = event.data.object as Stripe.Subscription;
+  return {
+    currentPeriodStart: subscription.current_period_start,
+    currentPeriodEnd: subscription.current_period_end,
+    status: subscription.status,
+    price: subscription.items.data[0]?.price["unit_amount"] || null,
+    stripePriceId: subscription.items.data[0]?.price.id || null,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end || false,
+    cancelledAt: subscription.canceled_at,
+  };
+};
+
 export const handleSubscriptionCreated = async ({
   event,
 }: {
@@ -146,15 +159,10 @@ export const handleSubscriptionUpdated = async ({
     const res = await db.insert(subscriptionSchema).values(subscriptionObj);
   } else {
     // UPDATE
+    const subscriptionObj = createNewUpdateSubscriptionObj(event);
     const res = await db
       .update(subscriptionSchema)
-      .set({
-        currentPeriodStart: subscription.current_period_start,
-        currentPeriodEnd: subscription.current_period_end,
-        status: subscription.status,
-        price: subscription.items.data[0]?.price["unit_amount"] || null,
-        stripePriceId: subscription.items.data[0]?.price.id || null,
-      })
+      .set(subscriptionObj)
       .where(eq(subscriptionSchema.id, id));
   }
 };
@@ -165,20 +173,10 @@ export const handleSubscriptionCanceled = async ({
   event: Stripe.Event;
 }) => {
   const subscription = event.data.object as Stripe.Subscription;
-  const {
-    id: stripeId,
-    current_period_start: currentPeriodStart,
-    current_period_end: currentPeriodEnd,
-    status,
-  } = subscription;
+  const { id } = subscription;
+  const subscriptionObj = createNewUpdateSubscriptionObj(event);
   const res = await db
     .update(subscriptionSchema)
-    .set({
-      currentPeriodStart,
-      currentPeriodEnd,
-      status,
-      price: subscription.items.data[0]?.price["unit_amount"] || null,
-      stripePriceId: subscription.items.data[0]?.price.id || null,
-    })
-    .where(eq(subscriptionSchema.id, stripeId));
+    .set(subscriptionObj)
+    .where(eq(subscriptionSchema.id, id));
 };
