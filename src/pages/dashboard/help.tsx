@@ -37,11 +37,13 @@ const Dashboard: NextPage = () => {
                   <Send className="h-full" />
                 </div>
                 <div className="space-y-2">
-                  <AlertTitle className="">Hola {user?.firstName} </AlertTitle>
+                  <AlertTitle className="">
+                    ¿{user?.firstName}, hay algo con lo que te podemos ayudar?{" "}
+                  </AlertTitle>
                   <AlertDescription>
-                    Aquí puedes ver y descargar todas tus facturas. Recuerda que
-                    si necesitas algo siempre puedes ponerte en contacto con
-                    nosotros!
+                    Para cualquier problema, dificultad o pregunta nos puedes
+                    contactar por el chat o por el formulario inferior. Haremos
+                    todo lo posible para contestar lo más rápido que podamos.
                   </AlertDescription>
                 </div>
               </Alert>
