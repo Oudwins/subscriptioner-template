@@ -126,7 +126,14 @@ export const columns: ColumnDef<Subscription>[] = [
               asChild
             >
               <Link
-                href={`/dashboard/subscriptions/${row.original.stripePriceId}/cancel`}
+                href={{
+                  pathname: "/dashboard/services/cancel",
+                  query: {
+                    subscription_id: row.original.id,
+                    plan: row.original.name,
+                    current_period_end: row.original.currentPeriodEnd,
+                  },
+                }}
                 className=""
               >
                 <XCircle className="mr-2 h-4 w-4" />
