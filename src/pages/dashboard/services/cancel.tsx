@@ -34,14 +34,8 @@ const CancelationPage: NextPage = () => {
     current_period_end: currentPeriodEnd,
   } = router.query;
 
-  // show 404 page if query params not provided
-  if (!subscriptionId || !plan || !currentPeriodEnd) {
-    return (
-      <div className="">
-        <Inner404 />
-      </div>
-    );
-  }
+  const { mutate } =
+    api.subscriptions.cancelSubscriptionAtPeriodEnd.useMutation();
 
   function calculateDaysLeft() {
     const oneDay = 24 * 60 * 60 * 1000;
@@ -52,9 +46,7 @@ const CancelationPage: NextPage = () => {
     // @ts-ignore
     return Math.round(Math.abs((subscriptionEnd - today) / oneDay));
   }
-  function timeout(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+
   async function handleSubscriptionCancelation(
     e: MouseEvent<HTMLElement>,
     subscriptionId: string
@@ -63,7 +55,18 @@ const CancelationPage: NextPage = () => {
     if (isSubmitting) return;
     setIsSumbmitting(true);
 
+    const res = await mutate({ subscriptionId });
+
     router.push("/dashboard");
+  }
+
+  // show 404 page if query params not provided
+  if (!subscriptionId || !plan || !currentPeriodEnd) {
+    return (
+      <div className="">
+        <Inner404 />
+      </div>
+    );
   }
 
   return (
@@ -114,11 +117,13 @@ const CancelationPage: NextPage = () => {
                     <AlertDialogHeader>
                       <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Está acción es irreversible.
+                        Está acción es irreversible. Cuando llegue la próxima
+                        fecha de cobro, tu subscriptión se cancelará
+                        automáticamente.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={(e: MouseEvent<HTMLElement>) =>
                           handleSubscriptionCancelation(
