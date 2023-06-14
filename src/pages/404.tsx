@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import inner404 from "~/components/ui/inner404";
 import Inner404 from "~/components/ui/inner404";
 
 const Home: NextPage = () => {
