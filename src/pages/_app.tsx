@@ -27,7 +27,6 @@ const MyApp: AppType = ({ Component, pageProps }: Props) => {
       {...pageProps}
     >
       {getLayout(<Component {...pageProps} />)}
-      <script async src="//js-eu1.hs-scripts.com/27233929.js"></script>
       <Toaster />
     </ClerkProvider>
   );
