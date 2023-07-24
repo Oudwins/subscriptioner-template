@@ -1,86 +1,47 @@
-# Create T3 App
+# Subscriptioner 
+####
+#### Description:
 
-## Requirements
+##### What is this?
+This is meant to be the base building blocks for any app that needs to manage subscriptions & handle subscription payments. The example used here is a hosting company. Since this was the usecase I was aiming for.
 
-- The stripe CLI to locally test webhooks
+This repo was used as the basis for my hosting business (whose repo is not public unfortunatly), you can visit the site here -> https://app.ridaly.com
 
-## TODO
+#### How does it work?
+Clerk.dev protects all routes, requiring you to sign in to view the app.
 
-- deploy to vercel
+Once you are signed in, you may purchase a "hosting" subscription on a yearly basis. This uses stripe checkout to generate a checkout page for the user.
 
-- Legal pages in MD -> remove A2 hosting relevant info & serve them statically.
+If the user pays, a webhook is sent to our backend with the new subscription as well as the userId. To avoid getting raid limited by using stripe's api as a database we store the subscription inside our own mysql DB.
 
-  - https://www.youtube.com/watch?v=Hiabp1GY8fA
+Finally, the user is redirected to the home page, where he may view his own subscriptions, their statuses, the next due date, the price.... He may cancel a subscription, in which case it is set to end at the next due date.
 
-- change billing details?
-- payment methods? edit?
-- On boarding questions? Get phone number for db?
-- add billing email to subscription? Where we send the invoices
-- Figure out how to do mobile that works for the DataTable
-- build a utility to construct the where clause based on filter object for DB
-- implement reload subscription data button
-- Create a subscription page where you have access to all the data for a specific subscription
+The user may also view all his invoices, or invoices for a specific subscription.
 
-## TODO less important
+Finnaly, there is a simple support form.
 
-- Header
+##### What tecnologies does it use?
+This repo is built up on the t3 stack (https://create.t3.gg/). Mostly because I was familiar with front-end web dev but wanted to make something more complex & have an excuse to learn nextjs, react & try out the t3 stack.
 
-  - Add payment methods?
-  - Add billing details?
+From the T3 stack we take
+- TRPC, a typesafe alternative to having a rest api. (Really just uses http under the hood but is nicer to work with)
+- tailwind, strictly better than CSS (we should have learned it instead!)
+- typescript, not much to say here...
+- nextjs/react, not much to say here...
 
-- Subscriptions
-  Make option for free trials without credit card. Need to handle - customer.subscription.paused - customer.subscription.resumed - customer.subscription.trial_will_end
+Things I have added
+- Clerk.dev for auth. I didn't want to spend most of the time on this project getting auth right so I chose to use clerk to move faster and get to working on the things that mattered in this case.
+- stripe, to handle payments
+- drizzle-orm, this is a pretty barebones orm for mysql. It works amazing and really isn't that much different from writing raw sql queries like we did in cs50. But the ability to describe the DB tables in a file and push to update is really nice.
+- shadcn ui (https://ui.shadcn.com/), this uses headless uis to create tailwind styled components you can customize. It allowed me to create the UI pretty fast so I could focus on building the backend logic. 
 
-  On subscription update MAY WANT TO HANDLE WHEN A SUBSCRIBER DECIDES TO CANCEL AT PERIOD END. NOT RIGHT NOW BUT AT SOME POINT. REACHES HERE THEN WHEN PERIOD ENDS SENDS DELETED
 
-- Data Table
+##### Problems I encountered
+I did not encounter many problems or hard to fix bugs. I imagine that is because the application is quite simple. The biggest roadblock was how unfamiliar I was with the tecnologies I was using.
 
-  - make custom filter component! that works on any table
+It took me almost 2 days to get the logic of how the T3 stack functioned, how nextjs works, how trpc works and be able to start writing code. After grinding it out for those first days everything started to click and was pretty smooth sailing from there.
 
-- Layouts
 
-  - Remove dashboard layout as default & add getLayout function (need to do some ts config...)
+##### Thoughts on the project as a whole
+It is certainly not the most complex app ever writen (and certainly has bugs). But I am pretty how with my work. It was a chance to, as I have said, learn some tecnologies I was unfamiliar with and I am happy that I could turn it into something of use in the real world. Not just a course project.
 
-- dashboard
-
-  - avoid the additional call to DB when user clicks on my services (have that be a simply link, query param that filters the data passed to the table)
-  - Allow for notifications via either DB table or just query params (the alert)
-
-- cancel
-  - Make 2nd page where I try to convince you to switch to monthly payments
-
-## Customizing this
-
-- Make sure to head to stripe & customize the invoices & checkout pages for better customer experience
-- look at schema & stripe hooks. Please not right now it is set up to only handle subscriptions. Not one time payments.
-- In the stripe products add features or they won't show up. (product.metadata.featuresList as array)
-
-- Make sure to edit the pages/dashboard/services/cancel text to align with the subscriptions you have
-
-- To avoid having to make the products twice do this
-- https://gist.github.com/mikegogulski/83ce5f6ac0633ca6cac913d0dab4b9eb
-
-## What's next? How do I make an app with this?
-
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
-
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
