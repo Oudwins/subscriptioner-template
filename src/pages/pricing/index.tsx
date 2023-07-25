@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { formatCurrency } from "~/utils/format";
 
 // runs once at build time & is cached
-export const getStaticProps = async () => {
+export const getStaticProps = async function getPricingInfo() {
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
     apiVersion: "2022-11-15",
   });
@@ -24,17 +24,38 @@ export const getStaticProps = async () => {
 
     return {
       id: p.id,
+      lang: {
+        es: {
+          name: product.metadata.esName || "missing product name",
+          featuresList:
+            (JSON.parse(
+              product.metadata.esFeaturesList as string
+            ) as string[]) || null,
+        },
+        en: {
+          name: product.metadata.enName || "missing product name",
+          featuresList:
+            (JSON.parse(
+              product.metadata.enFeaturesList as string
+            ) as string[]) || null,
+        },
+      },
       name: product.name,
       priceId: p.id,
       price: p.unit_amount || 0,
       interval: p.recurring?.interval,
       currency: p.currency,
-      features: JSON.parse(product.metadata.featuresList as string) || null,
     };
   });
-  const plans = (await Promise.all(productPromises)).sort(
-    (a, b) => a.price - b.price
-  );
+
+  let plans;
+  try {
+    plans = (await Promise.all(productPromises)).sort(
+      (a, b) => a.price - b.price
+    );
+  } catch (e) {
+    throw e;
+  }
 
   // PLANES FEATURES
   // basic ["Servidores ultra rápidos", "Certificado SSL gratuito", "Backups Gratuitos", "Seguridad Mejorada", "Garantía de devolución", "CDN gratuita", "Correo electrónico gratuito"]
@@ -52,6 +73,7 @@ export const getStaticProps = async () => {
 export default ({
   plans,
 }: InferGetServerSidePropsType<typeof getStaticProps>) => {
+  const locale = "es";
   //const [prices, setPrices] = useState([]);
   const { mutateAsync: createCheckoutSession } =
     api.payments.createSubscriptionCheckout.useMutation();
@@ -63,6 +85,7 @@ export default ({
     });
     router.push(sessionUrl as string);
   }
+  console.log(plans);
 
   return (
     <div>
@@ -88,7 +111,7 @@ export default ({
                   {/* price */}
                   <div>
                     <div className="text-center text-xl font-medium text-indigo-600">
-                      {item.name}
+                      {item.lang[locale].name}
                     </div>
                     <div className="space-y-1">
                       <div className="mt-4 text-center text-3xl font-semibold text-gray-800">
@@ -121,15 +144,18 @@ export default ({
                     </button> */}
                   </div>
                   {/* Features */}
-                  {!!item.features && !!item.features[0] && (
-                    <ul className="flex-1 space-y-3">
-                      {item.features.map((featureItem: string, idx: number) => (
-                        <li key={idx} className=" text-center">
-                          {featureItem}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  {!!item.lang[locale].featuresList &&
+                    !!item.lang[locale].featuresList[0] && (
+                      <ul className="flex-1 space-y-3">
+                        {item.lang[locale].featuresList.map(
+                          (featureItem: string, idx: number) => (
+                            <li key={idx} className=" text-center">
+                              {featureItem}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    )}
                 </div>
               ))}
             </div>
